@@ -13,8 +13,10 @@ COPY requirements.txt .
 # Install any dependencies
 RUN pip install -r requirements.txt
 
+RUN chmod 777 -R /projects
 # Copy the content of the local src directory to the working directory
 COPY . .
+RUN chmod 777 -R ./
 
 # Specify the command to run on container start
 CMD [ "uvicorn","main:app","--host","0.0.0.0","--port","8081" ]
