@@ -21,10 +21,7 @@ if not os.path.exists(base_directory):
 app = FastAPI()
 
 origins = [
-    "http://localhost",
-    "http://localhost:3000",
-    "http://localhost.fr.world.socgen:3000",
-    "http://localhost.fr.world.socgen:3000/"
+    "https://sgithub.fr.world.socgen/"
 ]
 
 app.add_middleware(
