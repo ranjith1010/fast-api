@@ -21,6 +21,7 @@ if not os.path.exists(base_directory):
 app = FastAPI()
 
 origins = [
+    "https://sgithub.fr.world.socgen",
     "https://sgithub.fr.world.socgen/"
 ]
 
