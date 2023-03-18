@@ -14,7 +14,7 @@ class FileDetail(BaseModel):
     filename: str
 
 
-base_directory = r'C:/Users/Public/data-profile/Repository'
+base_directory = r'./Repository'
 if not os.path.exists(base_directory):
     os.mkdir(base_directory)
 
