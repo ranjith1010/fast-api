@@ -13,7 +13,7 @@ COPY requirements.txt .
 # Install any dependencies
 RUN pip install -r requirements.txt
 
-RUN sudo chmod 777 -R /projects
+#RUN sudo chmod 777 -R /projects
 # Copy the content of the local src directory to the working directory
 COPY . .
 
