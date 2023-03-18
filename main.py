@@ -14,9 +14,9 @@ class FileDetail(BaseModel):
     filename: str
 
 
-base_directory = r'./Repository'
-if not os.path.exists(base_directory):
-    os.mkdir(base_directory)
+#base_directory = r'./Repository'
+#if not os.path.exists(base_directory):
+#    os.mkdir(base_directory)
 
 app = FastAPI()
 
