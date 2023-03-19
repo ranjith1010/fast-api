@@ -15,18 +15,15 @@ class FileDetail(BaseModel):
     path: str
     filename: str
 
-
-base_directory = r'C:/Users/Public/data-profile/Repository'
+base_directory = r'/tmp/Repository'
 if not os.path.exists(base_directory):
-    os.mkdir(base_directory)
+    os.makedirs(base_directory)
 
 app = FastAPI()
 
 origins = [
-    "http://localhost",
-    "http://localhost:3000",
-    "http://localhost.fr.world.socgen:3000",
-    "http://localhost.fr.world.socgen:3000/"
+    "https://sgithub.fr.world.socgen",
+    "https://sgithub.fr.world.socgen/"
 ]
 
 app.add_middleware(
