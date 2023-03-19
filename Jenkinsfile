@@ -8,7 +8,7 @@ podTemplate(label: label, containers: [
             git 'https://github.com/ranjith1010/fast-api'
             container('python') {
                 stage('Install Dependencies') {
-                    sh "pip install -r requirements.txt"
+                    sh "sudo pip install -r requirements.txt"
                 }
             }
         }
