@@ -1,39 +1,16 @@
-pipeline{
-    environment {
-        build_version = "1+${BUILD_NUMBER}"
-    }
-    agent {
-        docker { image 'python:3' }
-    }
+def label = "mypod-${UUID.randomUUID().toString()}"
 
-    stages {
-        stage('Test pip'){
-            steps{
-                sh 'pip --version'
+podTemplate(label: label, containers: [
+    containerTemplate(name: 'python', image: 'python:3.7-alpine', ttyEnabled: true, command: 'cat'),
+]) {
+    node(label) {
+        stage('Get a Python project') {
+            git 'https://github.com/ranjith1010/fast-api.git'
+            container('python') {
+                stage('Install Dependencies') {
+                    sh "pip install -r requirements.txt"
+                }
             }
         }
-        stage('Clone github repo'){
-            steps {
-                git url: 'https://github.com/ranjith1010/fast-api', branch: 'main'
-            }
-        }
-
-        stage('Setup') {
-            steps {
-                sh 'pip install -r requirements.txt --user'
-            }
-        }
-
-        stage ('Commit in prod branch') {
-            steps {
-                sh '''
-                    echo "commit prod branch"
-                '''
-            }
-
-        }
-
-        
-        
     }
 }
