@@ -2,12 +2,19 @@ pipeline{
     environment {
         build_version = "1+${BUILD_NUMBER}"
     }
-    agent any
+    agent {
+        docker { image 'python:3' }
+    }
 
     stages {
+        stage('Test pip'){
+            steps{
+                sh 'pip --version'
+            }
+        }
         stage('Clone github repo'){
             steps {
-                git credentialsId: 'github-credentials', url: 'https://github.com/ranjith1010/fast-api', branch: 'main'
+                git url: 'https://github.com/ranjith1010/fast-api', branch: 'main'
             }
         }
 
