@@ -7,16 +7,17 @@ import ydata_profiling as pp
 import csv
 import codecs
 import os
+import sys
+import pandas_profiling
 
 
 class FileDetail(BaseModel):
     path: str
     filename: str
 
-
 base_directory = r'/tmp/Repository'
 if not os.path.exists(base_directory):
-    os.mkdir(base_directory)
+    os.makedirs(base_directory)
 
 app = FastAPI()
 
@@ -79,7 +80,7 @@ def parse_csv_up_to_json(file):
 
 def parse_csv_to_json(filename):
     data = []
-    with open(filename, encoding='utf-8') as csvf:
+    with open(filename, encoding = 'latin1') as csvf:
         csv_reader = csv.DictReader(csvf)
         for rows in csv_reader:
             data.append(rows)
@@ -87,7 +88,7 @@ def parse_csv_to_json(filename):
 
 
 def run_file(file_path):
-    data = pd.read_csv(file_path, sep=',')
+    data = pd.read_csv(file_path, sep=',',encoding = 'latin1', error_bad_lines=False)
     filecount = len(data.index)
     data_types = pd.DataFrame(data.dtypes, columns=['Data Type'])
     completeness_data = pd.DataFrame(data.notnull().sum() / filecount * 100, columns=['Completeness %'])
@@ -120,8 +121,9 @@ def run_file(file_path):
         max_length).join(min_length).join(maximum_values).join(minimum_values).join(format_values).join(sample_values)
 
     dq_report.to_csv(file_path.replace(".csv", "_output.csv"), sep=',')
-    profile = pp.ProfileReport(data)
+    profile = pandas_profiling.ProfileReport(data,correlations=None,missing_diagrams=None,duplicates=None,interactions=None)
     profile.to_file(file_path.replace(".csv", "_output.html"))
+    
 
 
 @app.get("/folders")
@@ -145,13 +147,13 @@ async def create_folder_and_save_file_api(file: UploadFile,
         dir_path = base_directory + '/' + path
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
-            file_path = dir_path + '/profile_' + file.filename
+            file_path = dir_path + '/Profile_' + file.filename
             with open(file_path, "wb+") as file_object:
                 file_object.write(file.file.read())
             run_file(file_path)
             return {"message": "Folder Created & File Saved Successfully"}
         else:
-            file_path = dir_path + '/profile_' + file.filename
+            file_path = dir_path + '/Profile_' + file.filename
             if os.path.exists(file_path):
                 os.remove(file_path)
                 os.remove(file_path.replace('.csv', '_output.csv'))
